@@ -37,11 +37,11 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer }) => {
 
     console.log(title, content)
     const onClick = () => {
-        saveCoverLetter(title, content)
+        saveCoverLetter({ question: title, answer: content })
             .then((res) => {
                 console.log(res)
 
-                getPreQ(res.data.data.id)
+                getPreQ({ cletterId: res.data.data.id })
                     .then((res) => {
                         console.log(res);
                         onHandleAnswer(res.data.data);

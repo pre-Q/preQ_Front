@@ -24,6 +24,7 @@ const Routers = () => {
                 <Route element={<PrivateRoute />} path='/' exact>
                     <Route element={<ServicePage />} path='/service' />
                 </Route>
+
                 <Route element={<LoginPage />} path='/login' />
             </Routes>
         </BrowserRouter>

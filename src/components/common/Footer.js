@@ -15,13 +15,14 @@ const FooterContainer = styled.div`
     .footer-wrapper{
         display: flex;
         width: 1200px;
+        justify-content: space-between;
     }
     .company-info{
         display:flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: left;
-        width: 400px;
+        // width: 400px;
     }
     .company-logo{
         width: 160px;
@@ -32,7 +33,7 @@ const FooterContainer = styled.div`
         justify-content: flex-end;
         align-items: flex-end;
         gap: 40px;
-        width: 800px;
+        // width: 800px;
     }
     .contact-text{
         font-family: 'Poppins';

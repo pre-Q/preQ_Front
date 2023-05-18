@@ -1,11 +1,8 @@
 import { createAction, handleActions } from "redux-actions";
-import produce from 'immer';
 import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, { createRequestActionType } from "../lib/createRequestSaga";
 import * as authAPI from '../lib/api/auth';
 
-const CHANGE_FIELD = 'auth/CHANGE_FIELD';
-const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionType(
     'auth/LOGIN',
 );
@@ -29,6 +26,7 @@ const initialState = {
 
 const auth = handleActions(
     {
+
         // 로그인
         [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
             ...state,

@@ -40,6 +40,7 @@ const LoginPage = ({ history }) => {
                     .then((res) => {
                         let type = 'google';
                         let accessToken = res.data.access_token;
+                        console.log(type, accessToken);
                         dispatch(login({ type, accessToken }))
                     })
                     .catch((err) => {
@@ -57,6 +58,7 @@ const LoginPage = ({ history }) => {
             success: auth => {
                 let type = 'kakao';
                 let accessToken = auth.access_token;
+                console.log(accessToken);
                 dispatch(login({ type, accessToken }))
             },
             fail: error => {
@@ -76,7 +78,7 @@ const LoginPage = ({ history }) => {
             setCookie('is_login', `${auth.data.accessToken}`)
             navigate('/');
         }
-    }, [auth, authError])
+    }, [auth, authError, navigate])
 
 
     return (

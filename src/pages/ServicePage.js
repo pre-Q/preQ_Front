@@ -9,7 +9,8 @@ import exImg from "../asset/example.png";
 import AnswerList from "../components/service/AnswerList";
 import Chart from "../components/service/Chart";
 import { useState } from "react";
-import { getCoverLetter } from "../lib/api/service";
+import { getCoverLetter, getPreQ } from "../lib/api/service";
+
 
 const ServiceContainer = styled.div`
     display: flex;
@@ -50,13 +51,46 @@ const ServicePage = () => {
 
     const [click, setClick] = useState(false);
 
+    const [answer, setAnswer] = useState([]);
+
+    const onHandleAnswer = (x) => {
+        setAnswer(x);
+    }
+
+    const [qlist, setQList] = useState([]);
+
+    // const [questions, setQuestions] = useState(qlist);
+
+    // useEffect(() => {
+    //     getCoverLetter()
+    //         .then((res) => {
+    //             setQuestions(res.data.data)
+    //         })
+    //         .catch((err) => console.log(err))
+    // }, [])
+
+    // useEffect(() => {
+    //     if (id) {
+    //         getPreQ({ cletterId: id })
+    //             .then((res) => {
+    //                 console.log(res)
+    //                 setAnswer(res.data.answer)
+    //                 console.log(answer)
+    //             }
+    //             )
+    //     }
+    //     else {
+    //         setAnswer('')
+    //     }
+    // })
+
     const isClick = (x) => {
         setClick(x)
     }
 
-    const [formId, setFormId] = useState(1);
+    const [formId, setFormId] = useState(0);
 
-    const [qlist, setQList] = useState([]);
+
 
     const onHandleQlist = (x) => {
         setQList(x)
@@ -66,11 +100,6 @@ const ServicePage = () => {
         setFormId(x)
     };
 
-    const [answer, setAnswer] = useState([]);
-
-    const onHandleAnswer = (x) => {
-        setAnswer(x);
-    }
 
 
     useEffect(() => {

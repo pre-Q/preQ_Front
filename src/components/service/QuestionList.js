@@ -4,6 +4,7 @@ import styled from "styled-components";
 import plusImg from "../../asset/plus.png";
 import dummy from "../../db/data.json";
 import { getCoverLetter } from "../../lib/api/service";
+import { useNavigate } from "react-router-dom";
 
 const ListBox = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const QuestionList = ({ onHandleForm, onHandleQlist }) => {
 
     const [qlist, setQList] = useState([])
     const onPlusQuestion = () => {
-        setQList([...qlist, { id: 10000, question: "", answer: "" }]);
+        setQList([...qlist, { id: "", question: "", answer: "" }]);
 
     }
 
@@ -55,9 +56,9 @@ const QuestionList = ({ onHandleForm, onHandleQlist }) => {
                     Question List
                 </div>
                 {qlist?.map((item, index) => (
-                    <div onClick={() => { onHandleForm(index) }} key={item.id}>
+                    <div onClick={() => { onHandleForm(index) }} key={item.index}>
                         <QuestionItem
-                            key={item.id}
+                            key={item.index}
                             title={item.question}
                         />
                     </div>
