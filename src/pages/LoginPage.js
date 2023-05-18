@@ -13,6 +13,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getQuestion } from "../modules/service";
 
 const { Kakao } = window;
 
@@ -76,6 +77,7 @@ const LoginPage = ({ history }) => {
             console.log('성공');
             console.log(auth)
             setCookie('is_login', `${auth.data.accessToken}`)
+            dispatch(getQuestion())
             navigate('/');
         }
     }, [auth, authError, navigate])

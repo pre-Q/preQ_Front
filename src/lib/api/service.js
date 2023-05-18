@@ -13,6 +13,12 @@ export const saveCoverLetter = async ({ question, answer }) => {
 }
 
 export const getCoverLetter = () => {
+    let config = {
+        headers: {
+            'Authorization': `Bearer ${getCookie('is_login')}`,
+            'withCredentials': true,
+        }
+    }
     return axios.get('/api/v1/preq/list', config)
 }
 

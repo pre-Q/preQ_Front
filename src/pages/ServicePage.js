@@ -10,6 +10,8 @@ import AnswerList from "../components/service/AnswerList";
 import Chart from "../components/service/Chart";
 import { useState } from "react";
 import { getCoverLetter, getPreQ } from "../lib/api/service";
+import { useDispatch, useSelector } from "react-redux";
+import { getQuestion } from "../modules/service";
 
 
 const ServiceContainer = styled.div`
@@ -49,72 +51,37 @@ const ServiceContainer = styled.div`
 
 const ServicePage = () => {
 
+
+    const { questions } = useSelector(({ service }) => ({
+        questions: service.questions
+    }))
+
     const [click, setClick] = useState(false);
 
-    const [answer, setAnswer] = useState([]);
+    const [answer, setAnswer] = useState();
 
-    const onHandleAnswer = (x) => {
-        setAnswer(x);
-    }
+    const [qlist, setQList] = useState(questions?.data);
+    console.log(qlist)
 
-    const [qlist, setQList] = useState([]);
-
-    // const [questions, setQuestions] = useState(qlist);
-
-    // useEffect(() => {
-    //     getCoverLetter()
-    //         .then((res) => {
-    //             setQuestions(res.data.data)
-    //         })
-    //         .catch((err) => console.log(err))
-    // }, [])
-
-    // useEffect(() => {
-    //     if (id) {
-    //         getPreQ({ cletterId: id })
-    //             .then((res) => {
-    //                 console.log(res)
-    //                 setAnswer(res.data.answer)
-    //                 console.log(answer)
-    //             }
-    //             )
-    //     }
-    //     else {
-    //         setAnswer('')
-    //     }
-    // })
+    // 질문 리스트 클릭시 전달
+    const [formId, setFormId] = useState(0);
+    console.log(formId)
 
     const isClick = (x) => {
         setClick(x)
     }
 
-    const [formId, setFormId] = useState(0);
-
-
-
-    const onHandleQlist = (x) => {
-        setQList(x)
-    };
-
-    const onHandleForm = (x) => {
-        setFormId(x)
-    };
-
-
-
-    useEffect(() => {
-        console.log(formId)
-        console.log(answer)
-    }, [formId, answer])
 
     return (
         <>
             <TopContainer color="blue" image="white">
                 <NavBar />
                 <ServiceContainer>
-                    <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} />
-                    <InputForm isClick={isClick} formId={formId} qlist={qlist} onHandleAnswer={onHandleAnswer} />
-                    {click ?
+                    <QuestionList setFormId={setFormId} setQList={setQList} />
+                    <InputForm formId={formId} qlist={qlist} setAnswer={setAnswer} />
+                    {/* <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} /> */}
+                    {/* <InputForm isClick={isClick} formId={formId} qlist={qlist} onHandleAnswer={onHandleAnswer} /> */}
+                    {answer ?
                         <div className="result-box">
                             <Chart />
                             <AnswerList answer={answer} />

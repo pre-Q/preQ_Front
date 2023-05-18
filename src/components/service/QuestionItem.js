@@ -26,14 +26,14 @@ const ItemBox = styled.button`
 
 const QuestionItem = (props) => {
 
-    var title = props.title
+    const { title, onClick } = props
 
     if (title !== null) {
         var titleStr = title.substr(0, 13) + "..."
     }
     return (
         <>
-            <ItemBox>
+            <ItemBox onClick={onClick}>
                 {titleStr}
             </ItemBox>
         </>

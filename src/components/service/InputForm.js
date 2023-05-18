@@ -3,6 +3,7 @@ import styled from "styled-components";
 import InputBox from "../common/InputBox";
 import StyleButton from "../common/StyleButton";
 import { getPreQ, saveCoverLetter } from "../../lib/api/service";
+import { useSelector } from "react-redux";
 
 
 const InputWrapper = styled.div`
@@ -28,23 +29,25 @@ const InputTitle = styled.div`
     color: #000000;
 `
 
-const InputForm = ({ isClick, formId, qlist, onHandleAnswer }) => {
+const InputForm = ({ isClick, formId, qlist, setAnswer }) => {
 
     const [click, setClick] = useState(false)
-    const [data, setData] = useState(qlist[formId])
-    const [title, setTitle] = useState(qlist[formId]?.question)
-    const [content, setContent] = useState(qlist[formId]?.answer)
+    // const [data, setData] = useState(qlist[formId])
+    const [question, setQuestion] = useState(qlist[formId]?.question);
+    const [content, setContent] = useState(qlist[formId]?.answer);
 
-    console.log(title, content)
+    console.log(qlist)
+    console.log(question, content)
+
     const onClick = () => {
-        saveCoverLetter({ question: title, answer: content })
+        saveCoverLetter({ question: question, answer: content })
             .then((res) => {
                 console.log(res)
 
                 getPreQ({ cletterId: res.data.data.id })
                     .then((res) => {
                         console.log(res);
-                        onHandleAnswer(res.data.data);
+                        setAnswer(res.data.data);
                         isClick(true);
                     })
             })
@@ -53,20 +56,20 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer }) => {
             });
     }
 
-    const HandleTitleChange = (e) => {
-        setTitle(e.target.value);
+    const onChangeQuestion = (e) => {
+        setQuestion(e.target.value);
     }
 
-    const HandleContentChange = (e) => {
+    const onChangeContent = (e) => {
         setContent(e.target.value);
     }
 
 
     useEffect(() => {
-        setData(qlist[formId])
-        setTitle(qlist[formId]?.question)
+        // setData(qlist[formId])
+        setQuestion(qlist[formId]?.question)
         setContent(qlist[formId]?.answer)
-    }, [formId, data, click, setTitle, setContent, qlist])
+    }, [formId, click, setQuestion, setContent, qlist])
 
 
 
@@ -74,14 +77,12 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer }) => {
         <>
             <InputWrapper>
                 <InputTitle>Enter Question</InputTitle>
-                <InputBox onChange={HandleTitleChange} width="600px" height='50px' value={formId !== "" ? title : ""} />
+                <InputBox onChange={onChangeQuestion} width="600px" height='50px' value={question ? question : ""} />
                 <br /><br />
                 <InputTitle>Enter Answer</InputTitle>
-                <InputBox onChange={HandleContentChange} width="600px" height="640px" value={formId !== "" ? content : ""} />
+                <InputBox onChange={onChangeContent} width="600px" height="640px" value={content ? content : ""} />
                 <br />
-                <div className="submit-button">
-                    <StyleButton width="195px" height="53px" size="22px" onClick={onClick}>Generate</StyleButton>
-                </div>
+                <StyleButton width="195px" height="53px" size="22px" onClick={onClick}>Generate</StyleButton>
             </InputWrapper>
         </>
     )

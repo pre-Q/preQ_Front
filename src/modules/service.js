@@ -3,6 +3,7 @@ import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, { createRequestActionType } from "../lib/createRequestSaga";
 import * as serviceAPI from '../lib/api/service';
 
+const SELECTED = 'service/SELECTED';
 const [SAVE_QUESTION, SAVE_QUESTION_SUCCESS, SAVE_QUESTION_FAILURE] = createRequestActionType(
     'service/SAVE_QUESTION',
 );
@@ -12,6 +13,7 @@ const [GET_QUESTION, GET_QUESTION_SUCCESS, GET_QUESTION_FAILURE] = createRequest
 const [GET_ANSWER, GET_ANSWER_SUCCESS, GET_ANSWER_FAILURE] = createRequestActionType(
     'service/GET_ANSWER',
 );
+const ADD_QUESTION = 'service/ADD_QUESTION';
 
 
 export const saveQuestion = createAction(SAVE_QUESTION, ({ question, answer }) => ({
@@ -25,12 +27,17 @@ export const getAnswer = createAction(GET_ANSWER, ({ cletterId }) => ({
     cletterId
 }));
 
+export const selectQuestion = createAction(SELECTED, selected => selected);
+
+export const addQuestion = createAction(ADD_QUESTION, qlist => qlist)
+
 // 지원 문항, 문항 답변 저장
 const saveQuestionSaga = createRequestSaga(SAVE_QUESTION, serviceAPI.saveCoverLetter);
 // 지원 문항 리스트 가져오기
 const getQuestionSaga = createRequestSaga(GET_QUESTION, serviceAPI.getCoverLetter);
 // 예측 질문 리스트 가져오기
 const getAnswerSaga = createRequestSaga(GET_ANSWER, serviceAPI.getPreQ);
+
 
 
 export function* serviceSaga() {
@@ -46,6 +53,8 @@ const initialState = {
     answersError: null,
     saving: null,
     savingError: null,
+    selected: null,
+    qlist: null,
 };
 
 const service = handleActions(
@@ -79,6 +88,14 @@ const service = handleActions(
         [GET_ANSWER_FAILURE]: (state, { payload: error }) => ({
             ...state,
             answersError: error
+        }),
+        [SELECTED]: (state, { payload: selected }) => ({
+            ...state,
+            selected: selected
+        }),
+        [ADD_QUESTION]: (state, { payload: qlist }) => ({
+            ...state,
+            qlist: qlist
         })
     },
     initialState
