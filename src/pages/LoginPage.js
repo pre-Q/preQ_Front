@@ -40,6 +40,7 @@ const LoginPage = ({ history }) => {
                 };
                 axios.post("https://oauth2.googleapis.com/token", payload)
                     .then((res) => {
+                        console.log(res);
                         let type = 'google';
                         let accessToken = res.data.access_token;
                         dispatch(login({ type, accessToken }))
