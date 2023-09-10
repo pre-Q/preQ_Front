@@ -91,15 +91,37 @@ const InputWrapper = styled.div`
     }
 `
 
-const InputTitle = styled.div`
-    display: flex;
+const InputTitle = styled.textarea`
+    box-sizing: border-box;
+    width: ${props => props.width};
+    height: ${props => props.height};
+    &:focus{
+        background: #F9F8F8;
+        box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+    }
+    &:hover{
+        background: #F9F8F8;
+        box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+    }
+    ::placeholder{
+        color: #A7A7A7;
+    }
+    border: none;
+    word-break:break-all;
+    resize: none;
+    padding: 12px;
+
     font-family: 'Poppins';
     font-style: normal;
-    font-weight: 600;
-    font-size: 25px;
-    line-height: 48px; 
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 25px;
     color: #000000;
 `
+
+
 
 const ApplicationPage = () => {
 
@@ -108,6 +130,7 @@ const ApplicationPage = () => {
     const [qlist, setQList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
     const navigator = useNavigate();
 
@@ -133,22 +156,31 @@ const ApplicationPage = () => {
         console.log(answer);
     }
 
+    const handleTitle = () => {
+        console.log('포커스 해제시')
+        console.log(title, description);
+    }
+    
+    const activeButton = () => {
+        alert(`${title} ${description} 입력 완료`);
+    }
+    const activeEnter = (e) => {
+        if(e.key === "Enter"){
+            console.log('엔터키 누름');
+            activeButton();
+        }
+    }
+
     return (
         <TopContainer color="blue" image="white">
             <NavBar />
             <ServiceContainer>
                 <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
                 <InputWrapper>
-                    <InputTitle>지원서 제목</InputTitle>
-                    <InputBox onChange={(e) => setTitle(e.target.value)} width="600px" height='50px' value={title} />
-                    <div className="submit-button">
-                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { setClick(true); }}>저장</StyleButton>
-                    </div>
-                    <br /><br /><br />
-                    <div className="submit-button">
-                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { setClick(true); }}>문항 추가하기</StyleButton>
-                    </div>
-
+                    <InputTitle width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
+                    <br/>
+                    <InputTitle width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
+                    <br/><br/>
                     <div className="application-item-list">
                         {Array(3)
                             .fill(0)
@@ -156,12 +188,10 @@ const ApplicationPage = () => {
                                 (<ApplicationItem width="600px" title='자기소개 해주세요.' content='저는 oo직무 수행에 도움이 될 만한 oo 인턴 경험과 ooo 일 경험을 가지고 있습니다. 이러한 직무경험과 함께 oo 경험하는 중 팀원들 사이에서 분위기메이커 역할을 하여 함께 일을 하는데 시너지를 낼 수 있는 역할을 하였습니다. 저와 함께 일을 하게 되면 저의 긍정마인드와 함께 밝은 모습으로 일 할 수 있게 될 것입니다.' />)
                             )}
                     </div>
-
                     <div className="submit-button">
                         <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator('/service/question') }}>문항 추가하기</StyleButton>
                     </div>
                 </InputWrapper>
-
                 <div className="result-box">
                     <Chart type='application' />
                     <div className="answer-text">
@@ -174,7 +204,6 @@ const ApplicationPage = () => {
                                 (<KeywordBox value='열정' />)
                             )}
                     </div>
-
                 </div>
                 {/* <div className="pre-box">
 
