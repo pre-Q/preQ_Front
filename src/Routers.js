@@ -11,6 +11,7 @@ import PrivateRoute from "./lib/router/PrivateRoute";
 import PostDetail from "./pages/PostDetail";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import ApplicationPage from "./pages/ApplicationPage";
 
 
 const Routers = () => {
@@ -34,7 +35,10 @@ const Routers = () => {
                     <Route element={<MyPage />} path='/mypage' />
                 </Route>
                 <Route element={<PrivateRoute />} path='/' exact>
-                    <Route element={<ServicePage />} path='/service' />
+                    <Route element={<ApplicationPage />} path='/service' />
+                </Route>
+                <Route element={<PrivateRoute />} path='/' exact>
+                    <Route element={<ServicePage />} path='/service/question' />
                 </Route>
                 <Route element={<LoginPage />} path='/login' />
                 {/* <Route element={<EditPostForm />} path='/community/edit/:id' /> */}

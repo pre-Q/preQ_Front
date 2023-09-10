@@ -118,7 +118,7 @@ const ServicePage = () => {
                                 :
                                 <div className="result-box">
                                     <div className="analy-box">
-                                        <Chart answer={answer?.softSkills} />
+                                        <Chart type='question' answer={answer?.softSkills} />
                                         <KeywordList answer={answer?.keywordTop5} />
                                     </div>
                                     <AnswerList answer={answer?.preqList} />

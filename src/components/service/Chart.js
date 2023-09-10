@@ -25,11 +25,17 @@ const ChartBox = styled.div`
 `
 
 const Chart = (props) => {
+
     return (
         <ChartBox>
-            <div className="plot-text">
-                세부 역량
-            </div>
+            {props.type === 'application' ?
+                <div className="answer-text">
+                    지원자님은 긍정적인 마인드가 돋보여요!
+                </div> :
+                <div className="plot-text">
+                    세부 역량
+                </div>
+            }
             <div className="plot-box">
                 {/* <Barchart /> */}
                 <RadarChart answer={props?.answer} />

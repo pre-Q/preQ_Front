@@ -9,6 +9,7 @@ const TopContainer = styled.div`
     left: 0;
     width: 100%;
     min-width: 1400px;
+    min-height: 1400px;
     background-image: url(${props => props.image === 'blue' ? background : background2});
     background-repeat: no-repeat;
     background-position: top center;
