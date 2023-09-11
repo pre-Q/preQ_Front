@@ -26,10 +26,10 @@ const ItemBox = styled.button`
 
 const QuestionItem = (props) => {
 
-    var title = props.title
+    const {title} = props;
 
     if (title !== null) {
-        var titleStr = title.substr(0, 13) + "..."
+        var titleStr = title ? title.substr(0, 13) + "..." : '제목 없음'
     }
     return (
         <>

@@ -32,4 +32,23 @@ export const getPreQ = async (question, answer, config) => {
     return await axios.post(`${PROXY}/api/v1/preq/result`, { question: question, answer: answer }, config)
 }
 
+// 새로운 지원서 저장
+export const postNewApplication = async (config) => {
+    return await axios.post(`${PROXY}/api/v1/application`, {}, config);
+}
+
+// 지원서 조회
+export const getAllApplication = async (config) => {
+    return await axios.get(`${PROXY}/api/v1/application/list`, config);
+}
+
+// 지원서 제목 저장
+export const patchTitle = async (appId, title, config) => {
+    return await axios.patch(`${PROXY}/api/v1/application/${appId}/title`, {title: title}, config);
+}
+
+// 지원서 설명 저장
+export const patchMemo = async (appId, memo, config) => {
+    return await axios.patch(`${PROXY}/api/v1/application/${appId}/memo`, {memo: memo}, config);
+}
 

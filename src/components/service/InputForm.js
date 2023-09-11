@@ -56,7 +56,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
         await saveCoverLetter(title, content, preqList, keywords, abilities, config)
             .then((res) => {
                 console.log(res)
-                window.location.replace(`/service`);
+                window.location.replace(`/application/0/question/0`);
             })
             .catch((err) => {
                 console.log(err)
@@ -81,6 +81,10 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
                 setKeywords(res.data.data.keywordTop5);
                 setAbilities(res.data.data.softSkills);
                 isClick(true);
+            })
+            .catch((err) => {
+                console.log(err);
+                onHandleLoading(false);
             })
         onHandleLoading(false);
     }

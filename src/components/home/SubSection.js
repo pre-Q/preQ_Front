@@ -58,17 +58,17 @@ const SubSection = () => {
                             <CardItem
                                 src={card1}
                                 label='Question Prediction'
-                                text='지원서 기반 예상 면접 질문 제공'
+                                text='지원서 기반&#13;&#10;예상 면접 질문 제공'
                             />
                             <CardItem
                                 src={card2}
                                 label='Community'
-                                text='지원자들간 면접 후기와 팁을 공유하는 게시판'
+                                text='지원자들간 면접 후기와 팁을&#13;&#10;공유하는 게시판'
                             />
                             <CardItem
                                 src={card3}
                                 label='Keyword Analysis'
-                                text='키워드 분석을 통한 지원자의 성향 파악'
+                                text='키워드 분석을 통한&#13;&#10;지원자의 성향 파악'
                             />
                         </div>
                     </div>

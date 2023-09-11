@@ -13,6 +13,9 @@ import ApplicationItem from "../components/service/ApplicationItem";
 import { useNavigate } from "react-router-dom";
 import Chart from "../components/service/Chart";
 import KeywordBox from "../components/service/KeywordBox";
+import ApplicationList from "../components/service/ApplicationList";
+import { patchTitle } from "../lib/api/service";
+import { getCookie } from "../lib/cookie";
 
 const ServiceContainer = styled.div`
     display: flex;
@@ -126,7 +129,7 @@ const InputTitle = styled.textarea`
 const ApplicationPage = () => {
 
     const [click, setClick] = useState('');
-    const [formId, setFormId] = useState('');
+    const [appId, setAppId] = useState('');
     const [qlist, setQList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -146,7 +149,7 @@ const ApplicationPage = () => {
 
 
     const onHandleForm = (x) => {
-        setFormId(x)
+        setAppId(x);
     };
 
     const [answer, setAnswer] = useState('');
@@ -157,29 +160,48 @@ const ApplicationPage = () => {
     }
 
     const handleTitle = () => {
-        console.log('포커스 해제시')
+        console.log('지원서 아이디', appId);
+        let config = {
+            headers: {
+                'Authorization': `Bearer ${getCookie('is_login')}`,
+                'withCredentials': true,
+            }
+        }
+        console.log('포커스 해제시');
         console.log(title, description);
+        patchTitle(appId,  title, config)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     }
     
-    const activeButton = () => {
-        alert(`${title} ${description} 입력 완료`);
-    }
+
     const activeEnter = (e) => {
+        console.log('지원서 아이디', appId);
+        let config = {
+            headers: {
+                'Authorization': `Bearer ${getCookie('is_login')}`,
+                'withCredentials': true,
+            }
+        }
         if(e.key === "Enter"){
             console.log('엔터키 누름');
-            activeButton();
+            patchTitle(appId,  title, config)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
         }
     }
+
+
 
     return (
         <TopContainer color="blue" image="white">
             <NavBar />
             <ServiceContainer>
-                <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
+                <ApplicationList onHandleForm={onHandleForm}/>
                 <InputWrapper>
                     <InputTitle width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
                     <br/>
-                    <InputTitle width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
+                    <InputTitle width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleTitle}></InputTitle>
                     <br/><br/>
                     <div className="application-item-list">
                         {Array(3)
@@ -189,7 +211,7 @@ const ApplicationPage = () => {
                             )}
                     </div>
                     <div className="submit-button">
-                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator('/service/question') }}>문항 추가하기</StyleButton>
+                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator('/application/0/question/0') }}>문항 추가하기</StyleButton>
                     </div>
                 </InputWrapper>
                 <div className="result-box">

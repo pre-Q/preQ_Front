@@ -35,10 +35,10 @@ const Routers = () => {
                     <Route element={<MyPage />} path='/mypage' />
                 </Route>
                 <Route element={<PrivateRoute />} path='/' exact>
-                    <Route element={<ApplicationPage />} path='/service' />
+                    <Route element={<ApplicationPage />} path='/application/:item' />
                 </Route>
                 <Route element={<PrivateRoute />} path='/' exact>
-                    <Route element={<ServicePage />} path='/service/question' />
+                    <Route element={<ServicePage />} path='/application/:item/question/:item' />
                 </Route>
                 <Route element={<LoginPage />} path='/login' />
                 {/* <Route element={<EditPostForm />} path='/community/edit/:id' /> */}

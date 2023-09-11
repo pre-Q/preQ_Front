@@ -8,6 +8,7 @@ import { getCookie } from "../../lib/cookie";
 
 const ListBox = styled.div`
     display: flex;
+    width: 200px;
     align-items: flex-center;
     flex-direction: column;
     .question-list-title{
@@ -32,7 +33,6 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
     const [qlist, setQList] = useState([]);
     const onPlusQuestion = () => {
         setQList([...qlist, { id: '', question: "", answer: "" }]);
-
     }
 
     const [formId, setFormId] = useState('')
