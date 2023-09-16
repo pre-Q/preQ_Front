@@ -157,7 +157,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
                 <br />
                 <div className="submit-button">
                     {/* {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>} */}
-                    {title && content && !click && formId === '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
+                    {!click && formId === '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
                     {click || answer?.preqList && formId !== '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : null}
                 </div>
             </InputWrapper>

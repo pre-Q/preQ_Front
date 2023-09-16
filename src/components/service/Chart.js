@@ -28,7 +28,7 @@ const Chart = (props) => {
 
     return (
         <ChartBox>
-            {props.type === 'application' ?
+            {props?.type === 'application' ?
                 <div className="answer-text">
                     지원자님은 긍정적인 마인드가 돋보여요!
                 </div> :

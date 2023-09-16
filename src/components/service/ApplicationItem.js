@@ -20,9 +20,9 @@ const ItemBox = styled.div`
 `
 const ApplicationItem = (props) => {
 
-    const { title, content, width } = props;
+    const { id, title, content, width } = props;
     return (
-        <ItemBox width={width}>
+        <ItemBox width={width} id={id}>
             {title}
             <br /><br />
             {content}

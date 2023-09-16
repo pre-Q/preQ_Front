@@ -14,7 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Chart from "../components/service/Chart";
 import KeywordBox from "../components/service/KeywordBox";
 import ApplicationList from "../components/service/ApplicationList";
-import { patchMemo, patchTitle } from "../lib/api/service";
+import { getAllApplicationDetail, getApplicationDetail, patchMemo, patchTitle } from "../lib/api/service";
 import { getCookie } from "../lib/cookie";
 
 const ServiceContainer = styled.div`
@@ -24,6 +24,7 @@ const ServiceContainer = styled.div`
     margin-top: 50px;
     margin-right: auto;
     margin-left: auto;
+    min-height: 1000px;
     gap: 40px;
     .pre-box{
         display: flex;
@@ -134,6 +135,7 @@ const ApplicationPage = () => {
     const [appId, setAppId] = useState(0);
 
     const [loading, setLoading] = useState(false);
+    const [detail, setDetail] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -141,6 +143,22 @@ const ApplicationPage = () => {
 
     console.log('appList', appList);
     console.log('appId', appId);
+
+    const getAppDetail = async () => {
+        let config = {
+            headers: {
+                'Authorization': `Bearer ${getCookie('is_login')}`,
+                'withCredentials': true,
+            }
+        }
+        await getApplicationDetail(appId, config)
+            .then((res) => { console.log(res); setDetail(res.data.data); setTitle(res.data.data.title); setDescription(res.data.data.memo); })
+            .catch((err) => console.log(err));
+    }
+
+    useEffect(() => {
+        getAppDetail();
+    }, [appId]);
 
     const onHandleLoading = (x) => {
         setLoading(x);
@@ -164,7 +182,7 @@ const ApplicationPage = () => {
     }
 
 
-    
+
     // 제목 수정
     const handleTitle = () => {
         console.log('지원서 아이디', appId);
@@ -176,9 +194,9 @@ const ApplicationPage = () => {
         }
         console.log('포커스 해제시');
         console.log(title);
-        patchTitle(appId,  title, config)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        patchTitle(appId, title, config)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
     }
 
     // 설명 수정
@@ -192,10 +210,10 @@ const ApplicationPage = () => {
         console.log('포커스 해제시');
         console.log(description);
         patchMemo(appId, description, config)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
     }
-    
+
     // 엔터키 누르면 제목 및 내용 수정
     const activeEnter = (e) => {
         console.log('지원서 아이디', appId);
@@ -205,18 +223,18 @@ const ApplicationPage = () => {
                 'withCredentials': true,
             }
         }
-        if(e.key === "Enter"){
+        if (e.key === "Enter") {
             console.log('엔터키 누름');
-            if (e.target.id === 'title'){
+            if (e.target.id === 'title') {
                 patchTitle(appId, title, config)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
                 document.getElementById("title").blur();
             }
-            if (e.target.id === 'memo'){
+            if (e.target.id === 'memo') {
                 patchMemo(appId, description, config)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
                 document.getElementById("memo").blur();
             }
         }
@@ -227,52 +245,46 @@ const ApplicationPage = () => {
     }, [appId, title, description, appList]);
 
 
-
     return (
         <TopContainer color="blue" image="white">
             <NavBar />
             <ServiceContainer>
-                <ApplicationList onHandleForm={onHandleForm} onHandleAppList={onHandleAppList}/>
+                <ApplicationList onHandleForm={onHandleForm} onHandleAppList={onHandleAppList} />
                 <InputWrapper>
-                    <InputTitle id="title" width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
-                    <br/>
-                    <InputTitle id="memo" width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleMemo} onKeyDown={(e) => activeEnter(e)}></InputTitle>
-                    <br/><br/>
-                    <div className="application-item-list">
-                        {Array(3)
-                            .fill(0)
-                            .map((_, i) =>
-                                (<ApplicationItem width="600px" title='자기소개 해주세요.' content='저는 oo직무 수행에 도움이 될 만한 oo 인턴 경험과 ooo 일 경험을 가지고 있습니다. 이러한 직무경험과 함께 oo 경험하는 중 팀원들 사이에서 분위기메이커 역할을 하여 함께 일을 하는데 시너지를 낼 수 있는 역할을 하였습니다. 저와 함께 일을 하게 되면 저의 긍정마인드와 함께 밝은 모습으로 일 할 수 있게 될 것입니다.' />)
+                    <InputTitle id="title" width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)} value={title}></InputTitle>
+                    <br />
+                    <InputTitle id="memo" width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleMemo} onKeyDown={(e) => activeEnter(e)} value={description}></InputTitle>
+                    <br /><br />
+                    {detail?.applicationChild ?
+                        <div className="application-item-list">
+                            {detail?.applicationChild?.map((item, i) =>
+                                (<ApplicationItem id={item.applicationChildId} width="600px" title={item.question} content={item.answer} />)
                             )}
-                    </div>
+                        </div> : null}
                     <div className="submit-button">
                         <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${appId}`) }}>문항 추가하기</StyleButton>
                     </div>
                 </InputWrapper>
-                <div className="result-box">
-                    <Chart type='application' />
-                    <div className="answer-text">
-                        지원자님의 핵심 키워드는 다음과 같아요!
-                    </div>
-                    <div className="keyword-list">
-                        {Array(5)
-                            .fill(0)
-                            .map((_, i) =>
-                                (<KeywordBox value='열정' />)
+                {detail?.keywordTop5 ?
+                    <div className="result-box">
+                        <Chart type='application' answer={detail?.softSkills} />
+                        <div className="answer-text">
+                            지원자님의 핵심 키워드는 다음과 같아요!
+                        </div>
+                        <div className="keyword-list">
+                            {detail?.keywordTop5?.map((item) =>
+                                (<KeywordBox value={item} />)
                             )}
+                        </div>
                     </div>
-                </div>
-                {/* <div className="pre-box">
+                    : <div className="pre-box">
 
-                    <img src={exImg} alt="준비이미지" width="450px" />
-                    <div className="pre-text">
-                        지원서 문항과 답변을 넣고 <br />
-                        예상 면접 질문을 생성해보세요!
-                    </div>
-                </div> */}
-
-
-
+                        <img src={exImg} alt="준비이미지" width="450px" />
+                        <div className="pre-text">
+                            지원서 문항과 답변을 넣고 <br />
+                            예상 면접 질문을 생성해보세요!
+                        </div>
+                    </div>}
             </ServiceContainer>
             <Footer />
         </TopContainer>

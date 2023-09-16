@@ -13,7 +13,7 @@ let config = {
 // 질문 내용 저장
 export const saveCoverLetter = async (appId, question, answer, config) => {
     console.log({ appId, question, answer })
-    return await axios.post(`${PROXY}/api/v1/application/${appId}/child`, { question: question, answer: answer}, config);
+    return await axios.post(`${PROXY}/api/v1/application/${appId}/child`, { question: question, answer: answer }, config);
 }
 
 // 질문 리스트 조회
@@ -36,18 +36,24 @@ export const postNewApplication = async (config) => {
     return await axios.post(`${PROXY}/api/v1/application`, {}, config);
 }
 
-// 지원서 조회
+// 지원서 리스트 조회(질문, 답변)
 export const getAllApplication = async (config) => {
     return await axios.get(`${PROXY}/api/v1/application/list`, config);
 }
 
 // 지원서 제목 저장
 export const patchTitle = async (appId, title, config) => {
-    return await axios.patch(`${PROXY}/api/v1/application/${appId}/title`, {title: title}, config);
+    return await axios.patch(`${PROXY}/api/v1/application/${appId}/title`, { title: title }, config);
 }
 
 // 지원서 설명 저장
 export const patchMemo = async (appId, description, config) => {
-    return await axios.patch(`${PROXY}/api/v1/application/${appId}/memo`, {memo: description}, config);
+    return await axios.patch(`${PROXY}/api/v1/application/${appId}/memo`, { memo: description }, config);
 }
+
+// 지원서 상세 조회
+export const getApplicationDetail = async (appId, config) => {
+    return await axios.get(`${PROXY}/api/v1/application/${appId}`, config);
+}
+
 
