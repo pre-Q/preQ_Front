@@ -33,12 +33,13 @@ const InputTitle = styled.div`
 `
 const PROXY = window.location.hostname === 'localhost' ? '' : '/home';
 
-const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) => {
+const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, answer }) => {
 
     const { id } = useParams();
 
     const [appId, setAppId] = useState('');
 
+    const [qId, setQId] = useState(formId);
     const [click, setClick] = useState(false);
     const [data, setData] = useState(qlist[formId]);
     const [title, setTitle] = useState('');
@@ -64,7 +65,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
         await saveCoverLetter(id, title, content, config)
             .then((res) => {
                 console.log('결과값', res);
-                // window.location.replace(`/application/${id}`);
+                setQId(res.data.data);
+                window.location.replace(`/application/${id}`);
             })
             .catch((err) => {
                 console.log(err)
@@ -80,22 +82,20 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
                 'withCredentials': true,
             }
         }
-        await saveCoverLetter(id, title, content, config)
-            .then((res) =>
-                getPreQ(res.data.data, config)
-                    .then((res) => {
-                        console.log(res);
-                        console.log(res.data.data);
-                        onHandleAnswer(res.data.data);
-                        // setpreqList(res.data.data.preqList);
-                        // setKeywords(res.data.data.keywordTop5);
-                        // setAbilities(res.data.data.softSkills);
-                        isClick(true);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        onHandleLoading(false);
-                    }))
+        await getPreQ(formId, config)
+            .then((res) => {
+                console.log(res);
+                console.log(res.data.data);
+                onHandleAnswer(res.data.data);
+                // setpreqList(res.data.data.preqList);
+                // setKeywords(res.data.data.keywordTop5);
+                // setAbilities(res.data.data.softSkills);
+                isClick(true);
+            })
+            .catch((err) => {
+                console.log(err);
+                onHandleLoading(false);
+            });
         onHandleLoading(false);
     }
 
@@ -157,8 +157,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
                 <br />
                 <div className="submit-button">
                     {/* {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>} */}
-                    <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton>
-                    <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); setClick(true); }}>Generate</StyleButton>
+                    {title && content && !click && formId === '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
+                    {click || answer?.preqList && formId !== '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : null}
                 </div>
             </InputWrapper>
         </>

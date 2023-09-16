@@ -96,7 +96,7 @@ const ServicePage = () => {
 
     useEffect(() => {
         console.log(qlist);
-        console.log('service-page id',formId);
+        console.log('service-page id', formId);
         console.log('답', answer);
         console.log(answer?.softSkills);
         console.log(answer?.keywordTop5);
@@ -110,7 +110,7 @@ const ServicePage = () => {
                 <ServiceContainer>
                     <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
                     <InputForm isClick={isClick} formId={formId} answer={answer} qlist={qlist} onHandleAnswer={onHandleAnswer} onHandleLoading={onHandleLoading} />
-                    {answer ?
+                    {answer?.keywordTop5 ?
                         <>
                             {loading ?
                                 <div className="pre-box">
