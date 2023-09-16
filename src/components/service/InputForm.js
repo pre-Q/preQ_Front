@@ -35,7 +35,7 @@ const PROXY = window.location.hostname === 'localhost' ? '' : '/home';
 
 const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) => {
 
-    const { id } = useParams(); 
+    const { id } = useParams();
 
     const [appId, setAppId] = useState('');
 
@@ -63,8 +63,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
 
         await saveCoverLetter(id, title, content, config)
             .then((res) => {
-                console.log(res)
-                window.location.replace(`/application/${id}`);
+                console.log('결과값', res);
+                // window.location.replace(`/application/${id}`);
             })
             .catch((err) => {
                 console.log(err)
@@ -81,21 +81,21 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
             }
         }
         await saveCoverLetter(id, title, content, config)
-        .then((res) => 
-            getPreQ(formId, config)
-            .then((res) => {
-                console.log(res);
-                console.log(res.data.data);
-                onHandleAnswer(res.data.data);
-                // setpreqList(res.data.data.preqList);
-                // setKeywords(res.data.data.keywordTop5);
-                // setAbilities(res.data.data.softSkills);
-                isClick(true);
-            })
-            .catch((err) => {
-                console.log(err);
-                onHandleLoading(false);
-            }))
+            .then((res) =>
+                getPreQ(res.data.data, config)
+                    .then((res) => {
+                        console.log(res);
+                        console.log(res.data.data);
+                        onHandleAnswer(res.data.data);
+                        // setpreqList(res.data.data.preqList);
+                        // setKeywords(res.data.data.keywordTop5);
+                        // setAbilities(res.data.data.softSkills);
+                        isClick(true);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        onHandleLoading(false);
+                    }))
         onHandleLoading(false);
     }
 
