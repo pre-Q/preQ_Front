@@ -2,10 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const ItemBox = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
     box-sizing: border-box;
     border: none;
     width: 200px;
@@ -22,19 +18,24 @@ const ItemBox = styled.button`
     padding: 10px;
     margin-bottom: 18px;
     color: rgba(0, 0, 0, 0.7);
+    
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: start;
 `
 
 const QuestionItem = (props) => {
 
     const {title} = props;
 
-    if (title !== null) {
-        var titleStr = title ? title.substr(0, 13) + "..." : '제목 없음'
-    }
+    // if (title !== null) {
+    //     var titleStr = title ? title.substr(0, 13) + "..." : '제목 없음'
+    // }
     return (
         <>
             <ItemBox>
-                {titleStr}
+                {title}
             </ItemBox>
         </>
     )

@@ -4,6 +4,7 @@ import QuestionItem from "./QuestionItem";
 import plusImg from "../../asset/plus.png";
 import { getAllApplication, postNewApplication } from "../../lib/api/service";
 import { getCookie } from "../../lib/cookie";
+import { useNavigate } from "react-router-dom";
 
 const ListBox = styled.div`
     display: flex;
@@ -27,11 +28,11 @@ const ListBox = styled.div`
     }
 `
 
-const ApplicationList = ({onHandleForm}) => {
+const ApplicationList = ({onHandleForm, onHandleAppList}) => {
 
     const [appList, setAppList] = useState([]);
 
-    console.log(appList);
+    //
     const onPlusApplication = async () => {
         let config = {
             headers: {
@@ -55,12 +56,16 @@ const ApplicationList = ({onHandleForm}) => {
             }
         }
         const json = await getAllApplication(config);
-        setAppList(json.data.data)
+        setAppList(json.data.data);
     };
 
     useEffect(() => {
         getAppList();
     }, []);
+
+    useEffect(() => {
+        onHandleAppList(appList)
+    }, [appList, onHandleAppList])
 
     return(
         <>
@@ -69,10 +74,10 @@ const ApplicationList = ({onHandleForm}) => {
                     Application List
                 </div>
                 {appList?.map((item, index) => (
-                    <div onClick={() => { console.log(item.applicationId); onHandleForm(item.applicationId)}} key={item.id}>
+                    <div onClick={() => { console.log(item.applicationId); onHandleForm(item.applicationId);}} key={item.applicationId}>
                         <QuestionItem
                             key={item.applicationId}
-                            title={item.question}
+                            title={item.title}
                         />
                     </div>
                 ))}

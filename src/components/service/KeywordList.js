@@ -9,7 +9,7 @@ const KeywordList = (props) => {
         <KeywordBox>
             <div className="title">키워드</div>
             <div className="keyword-list">
-                {props?.answer.map((item, index) =>
+                {props?.answer?.map((item, index) =>
                     <div className="keyword">{index + 1}. {item}</div>
                 )}
             </div>

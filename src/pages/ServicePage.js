@@ -11,6 +11,7 @@ import Chart from "../components/service/Chart";
 import { useState } from "react";
 import KeywordList from "../components/service/KeywordList";
 import Spinner from "../asset/spinner.gif";
+import { useParams } from "react-router-dom";
 
 
 const ServiceContainer = styled.div`
@@ -68,6 +69,8 @@ const ServicePage = () => {
 
     const [qlist, setQList] = useState([]);
 
+    console.log('servicepage', qlist);
+
     const onHandleLoading = (x) => {
         setLoading(x);
         console.log(loading);
@@ -84,16 +87,17 @@ const ServicePage = () => {
 
     const [answer, setAnswer] = useState('');
 
+
     const onHandleAnswer = (x) => {
         setAnswer(x);
-        console.log(answer);
+        console.log('answer', answer)
     }
 
 
     useEffect(() => {
         console.log(qlist);
-        console.log(formId);
-        console.log(answer);
+        console.log('service-page id',formId);
+        console.log('답', answer);
         console.log(answer?.softSkills);
         console.log(answer?.keywordTop5);
     }, [formId, answer, qlist])
@@ -105,7 +109,7 @@ const ServicePage = () => {
                 <NavBar />
                 <ServiceContainer>
                     <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
-                    <InputForm isClick={isClick} formId={formId} qlist={qlist} onHandleAnswer={onHandleAnswer} onHandleLoading={onHandleLoading} />
+                    <InputForm isClick={isClick} formId={formId} answer={answer} qlist={qlist} onHandleAnswer={onHandleAnswer} onHandleLoading={onHandleLoading} />
                     {answer ?
                         <>
                             {loading ?

@@ -5,6 +5,7 @@ import StyleButton from "../common/StyleButton";
 import { getPreQ, getPreQItem, saveCoverLetter } from "../../lib/api/service";
 import { getCookie } from "../../lib/cookie";
 import { addPostItem } from "../../lib/api/community";
+import { useParams } from "react-router-dom";
 
 
 const InputWrapper = styled.div`
@@ -34,6 +35,10 @@ const PROXY = window.location.hostname === 'localhost' ? '' : '/home';
 
 const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) => {
 
+    const { id } = useParams(); 
+
+    const [appId, setAppId] = useState('');
+
     const [click, setClick] = useState(false);
     const [data, setData] = useState(qlist[formId]);
     const [title, setTitle] = useState('');
@@ -44,6 +49,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
     const [abilities, setAbilities] = useState('');
 
     console.log(title, content);
+    console.log('input data', data);
+
 
     // 질문 저장
     const onSaveForm = async () => {
@@ -53,10 +60,11 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
                 'withCredentials': true,
             }
         }
-        await saveCoverLetter(title, content, preqList, keywords, abilities, config)
+
+        await saveCoverLetter(id, title, content, config)
             .then((res) => {
                 console.log(res)
-                window.location.replace(`/application/0/question/0`);
+                window.location.replace(`/application/${id}`);
             })
             .catch((err) => {
                 console.log(err)
@@ -72,20 +80,22 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
                 'withCredentials': true,
             }
         }
-        await getPreQ(title, content, config)
+        await saveCoverLetter(id, title, content, config)
+        .then((res) => 
+            getPreQ(formId, config)
             .then((res) => {
                 console.log(res);
                 console.log(res.data.data);
                 onHandleAnswer(res.data.data);
-                setpreqList(res.data.data.preqList);
-                setKeywords(res.data.data.keywordTop5);
-                setAbilities(res.data.data.softSkills);
+                // setpreqList(res.data.data.preqList);
+                // setKeywords(res.data.data.keywordTop5);
+                // setAbilities(res.data.data.softSkills);
                 isClick(true);
             })
             .catch((err) => {
                 console.log(err);
                 onHandleLoading(false);
-            })
+            }))
         onHandleLoading(false);
     }
 
@@ -97,17 +107,17 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
         setContent(e.target.value);
     }
 
-    // 질문 클릭시 상세 조회
-    const getQuestionDetail = async (cletterId) => {
+    // 질문 클릭시 상세 조회(질문,답변,예상질문결과까지)
+    const getQuestionDetail = async (formId) => {
         let config = {
             headers: {
                 'Authorization': `Bearer ${getCookie('is_login')}`,
                 'withCredentials': true,
             }
         }
-        await getPreQItem(cletterId, config)
+        await getPreQItem(id, formId, config)
             .then((res) => {
-                console.log(res)
+                console.log(res);
                 setTitle(res.data.data?.question);
                 setContent(res.data.data?.answer);
             })
@@ -117,7 +127,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
     }
 
     useEffect(() => {
-        console.log(formId);
+        console.log('input fromId', formId);
+        console.log('qlist', qlist);
         if (formId !== '') {
             getQuestionDetail(formId);
         }
@@ -128,11 +139,11 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
     }, [formId])
 
 
-    useEffect(() => {
-        setData(qlist[formId])
-        // setTitle(qlist[formId]?.question)
-        // setContent(qlist[formId]?.answer)
-    }, [formId, data, click, setTitle, setContent, qlist])
+    // useEffect(() => {
+    //     setData(qlist[formId])
+    //     setTitle(qlist[formId]?.question)
+    //     setContent(qlist[formId]?.answer)
+    // }, [formId, data, click, setTitle, setContent, qlist]);
 
 
     return (
@@ -145,7 +156,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading }) 
                 <InputBox onChange={HandleContentChange} width="600px" height="640px" value={content} />
                 <br />
                 <div className="submit-button">
-                    {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>}
+                    {/* {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>} */}
+                    <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton>
                     <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); setClick(true); }}>Generate</StyleButton>
                 </div>
             </InputWrapper>

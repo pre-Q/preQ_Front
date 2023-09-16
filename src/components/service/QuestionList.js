@@ -5,6 +5,7 @@ import plusImg from "../../asset/plus.png";
 import dummy from "../../db/data.json";
 import { getCoverLetter, getPreQItem } from "../../lib/api/service";
 import { getCookie } from "../../lib/cookie";
+import { useParams } from "react-router-dom";
 
 const ListBox = styled.div`
     display: flex;
@@ -35,8 +36,9 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
         setQList([...qlist, { id: '', question: "", answer: "" }]);
     }
 
-    const [formId, setFormId] = useState('')
+    const { id } = useParams();
 
+    const [formId, setFormId] = useState('');
 
     // 질문 리스트 전체 조회
     const getQlist = async () => {
@@ -46,8 +48,7 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
                 'withCredentials': true,
             }
         }
-        const json = await getCoverLetter(config);
-        setQList(json.data.data)
+        await getCoverLetter(id, config).then((res) => setQList(res.data.data));
     };
 
     useEffect(() => {
@@ -56,7 +57,7 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
 
     useEffect(() => {
         onHandleQlist(qlist)
-        console.log(qlist)
+        console.log('question-list', qlist);
     }, [qlist, onHandleQlist])
 
 
@@ -68,7 +69,7 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
                 'withCredentials': true,
             }
         }
-        await getPreQItem(cletterId, config)
+        await getPreQItem(id, cletterId, config)
             .then((res) => {
                 console.log(res);
                 onHandleAnswer(res.data.data);
@@ -79,7 +80,6 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
     }
 
     useEffect(() => {
-        console.log(formId);
         if (formId !== '') {
             getQuestionDetail(formId);
         }

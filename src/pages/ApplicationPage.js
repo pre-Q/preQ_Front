@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import NavBar from "../components/common/NavBar";
@@ -10,11 +10,11 @@ import StyleButton from "../components/common/StyleButton";
 import Footer from "../components/common/Footer";
 import QuestionItem from "../components/service/QuestionItem";
 import ApplicationItem from "../components/service/ApplicationItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Chart from "../components/service/Chart";
 import KeywordBox from "../components/service/KeywordBox";
 import ApplicationList from "../components/service/ApplicationList";
-import { patchTitle } from "../lib/api/service";
+import { patchMemo, patchTitle } from "../lib/api/service";
 import { getCookie } from "../lib/cookie";
 
 const ServiceContainer = styled.div`
@@ -122,6 +122,7 @@ const InputTitle = styled.textarea`
     font-size: 23px;
     line-height: 25px;
     color: #000000;
+    white-space: nowrap;
 `
 
 
@@ -129,22 +130,25 @@ const InputTitle = styled.textarea`
 const ApplicationPage = () => {
 
     const [click, setClick] = useState('');
-    const [appId, setAppId] = useState('');
-    const [qlist, setQList] = useState([]);
+    const [appList, setAppList] = useState([]);
+    const [appId, setAppId] = useState(0);
+
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
     const navigator = useNavigate();
 
+    console.log('appList', appList);
+    console.log('appId', appId);
 
     const onHandleLoading = (x) => {
         setLoading(x);
         console.log(loading);
     };
 
-    const onHandleQlist = (x) => {
-        setQList(x)
+    const onHandleAppList = (x) => {
+        setAppList(x)
     };
 
 
@@ -159,6 +163,9 @@ const ApplicationPage = () => {
         console.log(answer);
     }
 
+
+    
+    // 제목 수정
     const handleTitle = () => {
         console.log('지원서 아이디', appId);
         let config = {
@@ -168,13 +175,28 @@ const ApplicationPage = () => {
             }
         }
         console.log('포커스 해제시');
-        console.log(title, description);
+        console.log(title);
         patchTitle(appId,  title, config)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     }
-    
 
+    // 설명 수정
+    const handleMemo = () => {
+        let config = {
+            headers: {
+                'Authorization': `Bearer ${getCookie('is_login')}`,
+                'withCredentials': true,
+            }
+        }
+        console.log('포커스 해제시');
+        console.log(description);
+        patchMemo(appId, description, config)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
+    
+    // 엔터키 누르면 제목 및 내용 수정
     const activeEnter = (e) => {
         console.log('지원서 아이디', appId);
         let config = {
@@ -185,11 +207,24 @@ const ApplicationPage = () => {
         }
         if(e.key === "Enter"){
             console.log('엔터키 누름');
-            patchTitle(appId,  title, config)
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+            if (e.target.id === 'title'){
+                patchTitle(appId, title, config)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+                document.getElementById("title").blur();
+            }
+            if (e.target.id === 'memo'){
+                patchMemo(appId, description, config)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+                document.getElementById("memo").blur();
+            }
         }
     }
+
+    useEffect(() => {
+        setAppId(appId);
+    }, [appId, title, description, appList]);
 
 
 
@@ -197,11 +232,11 @@ const ApplicationPage = () => {
         <TopContainer color="blue" image="white">
             <NavBar />
             <ServiceContainer>
-                <ApplicationList onHandleForm={onHandleForm}/>
+                <ApplicationList onHandleForm={onHandleForm} onHandleAppList={onHandleAppList}/>
                 <InputWrapper>
-                    <InputTitle width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
+                    <InputTitle id="title" width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)}></InputTitle>
                     <br/>
-                    <InputTitle width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleTitle}></InputTitle>
+                    <InputTitle id="memo" width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleMemo} onKeyDown={(e) => activeEnter(e)}></InputTitle>
                     <br/><br/>
                     <div className="application-item-list">
                         {Array(3)
@@ -211,7 +246,7 @@ const ApplicationPage = () => {
                             )}
                     </div>
                     <div className="submit-button">
-                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator('/application/0/question/0') }}>문항 추가하기</StyleButton>
+                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${appId}`) }}>문항 추가하기</StyleButton>
                     </div>
                 </InputWrapper>
                 <div className="result-box">
