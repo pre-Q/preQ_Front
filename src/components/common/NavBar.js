@@ -103,7 +103,7 @@ const NavBar = () => {
                         <LinkTo to='/community'>커뮤니티</LinkTo>
                         <LinkTo to='/mypage'>마이페이지</LinkTo>
                         {isLogin() ? <button className='logout-button' onClick={onLogout}>로그아웃</button> : <LinkTo to='/login'>로그인</LinkTo>}
-                        <Link to='/application'>
+                        <Link to='/application/id'>
                             <button className='service-button'>질문예측서비스</button></Link>
                     </Menu >
                 </NavBlock>

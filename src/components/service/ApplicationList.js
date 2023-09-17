@@ -28,7 +28,9 @@ const ListBox = styled.div`
     }
 `
 
-const ApplicationList = ({onHandleForm, onHandleAppList}) => {
+const ApplicationList = ({ onHandleForm, onHandleAppList }) => {
+
+    const navigator = useNavigate();
 
     const [appList, setAppList] = useState([]);
 
@@ -41,9 +43,9 @@ const ApplicationList = ({onHandleForm, onHandleAppList}) => {
             }
         }
         await postNewApplication(config)
-        .then((res) => {console.log(res); setAppList([...appList, { id: res.data, question: "", answer: "" }]);})
-        .catch((err) => console.log(err));
-        
+            .then((res) => { console.log(res); setAppList([...appList, { applicationId: res.data.data, title: "" }]); })
+            .catch((err) => console.log(err));
+
         console.log(appList);
     }
 
@@ -67,17 +69,17 @@ const ApplicationList = ({onHandleForm, onHandleAppList}) => {
         onHandleAppList(appList)
     }, [appList, onHandleAppList])
 
-    return(
+    return (
         <>
-        <ListBox>
-        <div className="question-list-title">
+            <ListBox>
+                <div className="question-list-title">
                     Application List
                 </div>
                 {appList?.map((item, index) => (
-                    <div onClick={() => { console.log(item.applicationId); onHandleForm(item.applicationId);}} key={item.applicationId}>
+                    <div onClick={() => { console.log(item.applicationId); onHandleForm(item?.applicationId); navigator(`/application/${item?.applicationId}`) }} key={item.applicationId}>
                         <QuestionItem
-                            key={item.applicationId}
-                            title={item.title}
+                            key={item?.applicationId}
+                            title={item?.title}
                         />
                     </div>
                 ))}
@@ -85,7 +87,7 @@ const ApplicationList = ({onHandleForm, onHandleAppList}) => {
                 <button className="plus-button" onClick={onPlusApplication}>
                     <img src={plusImg} alt="질문추가버튼" />
                 </button>
-        </ListBox>
+            </ListBox>
         </>
     )
 }

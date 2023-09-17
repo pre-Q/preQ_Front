@@ -262,7 +262,7 @@ const ApplicationPage = () => {
                             )}
                         </div> : null}
                     <div className="submit-button">
-                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${appId}`) }}>문항 추가하기</StyleButton>
+                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${appId}/child/cid`) }}>문항 추가하기</StyleButton>
                     </div>
                 </InputWrapper>
                 {detail && detail?.applicationChild?.length !== 0 ?

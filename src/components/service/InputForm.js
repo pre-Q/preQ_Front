@@ -35,7 +35,7 @@ const PROXY = window.location.hostname === 'localhost' ? '' : '/home';
 
 const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, answer }) => {
 
-    const { id } = useParams();
+    const { id, cid } = useParams();
 
     const [click, setClick] = useState(false);
     const [data, setData] = useState(qlist[formId]);
@@ -55,7 +55,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
         await saveCoverLetter(id, title, content, config)
             .then((res) => {
                 console.log('결과값', res);
-                window.location.replace(`/application/${id}`);
+                window.location.replace(`/application/${id}/child/${res.data.data}`);
             })
             .catch((err) => {
                 console.log(err)
@@ -71,7 +71,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
                 'withCredentials': true,
             }
         }
-        await getPreQ(formId, config)
+        await getPreQ(cid, config)
             .then((res) => {
                 console.log(res);
                 console.log(res.data.data);
@@ -113,8 +113,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
     }
 
     useEffect(() => {
-        if (formId !== '') {
-            getQuestionDetail(formId);
+        if (cid && cid !== 'new' && cid !== 'cid') {
+            getQuestionDetail(cid);
         }
         else {
             setTitle('');
@@ -122,7 +122,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
             onHandleAnswer('');
 
         }
-    }, [formId])
+    }, [formId, cid])
 
 
     // useEffect(() => {
@@ -143,8 +143,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
                 <br />
                 <div className="submit-button">
                     {/* {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>} */}
-                    {!click && formId === '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
-                    {click || answer?.preqList && formId !== '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : null}
+                    {!click && cid === 'new' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
+                    {click || answer?.preqList || cid !== 'new' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : null}
                 </div>
             </InputWrapper>
         </>
