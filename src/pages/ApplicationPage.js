@@ -265,7 +265,7 @@ const ApplicationPage = () => {
                         <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${appId}`) }}>문항 추가하기</StyleButton>
                     </div>
                 </InputWrapper>
-                {detail?.applicationChild?.length !== 0 ?
+                {detail && detail?.applicationChild?.length !== 0 ?
                     <div className="result-box">
                         <Chart type='application' answer={detail?.softSkills} />
                         <div className="answer-text">
