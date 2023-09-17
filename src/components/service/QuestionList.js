@@ -4,7 +4,7 @@ import styled from "styled-components";
 import plusImg from "../../asset/plus.png";
 import dummy from "../../db/data.json";
 import { getCoverLetter, getPreQItem } from "../../lib/api/service";
-import { getCookie } from "../../lib/cookie";
+import { getCookie, removeCookie, setCookie } from "../../lib/cookie";
 import { useParams } from "react-router-dom";
 
 const ListBox = styled.div`
@@ -93,7 +93,7 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
                     Question List
                 </div>
                 {qlist?.map((item, index) => (
-                    <div onClick={() => { console.log(item.id); onHandleForm(item.id); setFormId(item.id); }} key={item.id}>
+                    <div onClick={() => { console.log(item.id); console.log('new 데이터 삭제'); onHandleForm(item.id); setFormId(item.id); }} key={item.id}>
                         <QuestionItem
                             key={item.id}
                             title={item.question}

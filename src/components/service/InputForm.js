@@ -3,7 +3,7 @@ import styled from "styled-components";
 import InputBox from "../common/InputBox";
 import StyleButton from "../common/StyleButton";
 import { getPreQ, getPreQItem, saveCoverLetter } from "../../lib/api/service";
-import { getCookie } from "../../lib/cookie";
+import { getCookie, removeCookie, setCookie } from "../../lib/cookie";
 import { addPostItem } from "../../lib/api/community";
 import { useParams } from "react-router-dom";
 
@@ -37,20 +37,10 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
 
     const { id } = useParams();
 
-    const [appId, setAppId] = useState('');
-
-    const [qId, setQId] = useState(formId);
     const [click, setClick] = useState(false);
     const [data, setData] = useState(qlist[formId]);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-
-    const [preqList, setpreqList] = useState('');
-    const [keywords, setKeywords] = useState('');
-    const [abilities, setAbilities] = useState('');
-
-    console.log(title, content);
-    console.log('input data', data);
 
 
     // 질문 저장
@@ -65,7 +55,6 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
         await saveCoverLetter(id, title, content, config)
             .then((res) => {
                 console.log('결과값', res);
-                setQId(res.data.data);
                 window.location.replace(`/application/${id}`);
             })
             .catch((err) => {
@@ -87,9 +76,6 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
                 console.log(res);
                 console.log(res.data.data);
                 onHandleAnswer(res.data.data);
-                // setpreqList(res.data.data.preqList);
-                // setKeywords(res.data.data.keywordTop5);
-                // setAbilities(res.data.data.softSkills);
                 isClick(true);
             })
             .catch((err) => {
@@ -127,14 +113,14 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
     }
 
     useEffect(() => {
-        console.log('input fromId', formId);
-        console.log('qlist', qlist);
         if (formId !== '') {
             getQuestionDetail(formId);
         }
         else {
             setTitle('');
             setContent('');
+            onHandleAnswer('');
+
         }
     }, [formId])
 

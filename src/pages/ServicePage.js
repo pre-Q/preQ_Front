@@ -111,6 +111,7 @@ const ServicePage = () => {
                     <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
                     <InputForm isClick={isClick} formId={formId} answer={answer} qlist={qlist} onHandleAnswer={onHandleAnswer} onHandleLoading={onHandleLoading} />
                     {answer?.keywordTop5 ?
+                        // 예상 질문 있을 때 => 반복 생성시 : 예상 질문 조회
                         <>
                             {loading ?
                                 <div className="pre-box">
@@ -130,6 +131,7 @@ const ServicePage = () => {
                             }
                         </>
                         :
+                        // 예상질문 없을 때 => 초기 생성시 : 생성 안함
                         <div className="pre-box">
                             {loading ?
                                 <>
