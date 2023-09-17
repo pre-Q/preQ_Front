@@ -3,18 +3,15 @@ import { useState } from "react";
 import styled from "styled-components";
 import NavBar from "../components/common/NavBar";
 import TopContainer from "../components/common/TopContainer";
-import QuestionList from "../components/service/QuestionList";
-import InputBox from "../components/common/InputBox";
 import exImg from "../asset/example.png";
 import StyleButton from "../components/common/StyleButton";
 import Footer from "../components/common/Footer";
-import QuestionItem from "../components/service/QuestionItem";
 import ApplicationItem from "../components/service/ApplicationItem";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Chart from "../components/service/Chart";
 import KeywordBox from "../components/service/KeywordBox";
 import ApplicationList from "../components/service/ApplicationList";
-import { getAllApplicationDetail, getApplicationDetail, patchMemo, patchTitle } from "../lib/api/service";
+import { getApplicationDetail, patchMemo, patchTitle } from "../lib/api/service";
 import { getCookie } from "../lib/cookie";
 
 const ServiceContainer = styled.div`
@@ -29,7 +26,7 @@ const ServiceContainer = styled.div`
     .pre-box{
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         width: 500px;
     }
@@ -48,7 +45,7 @@ const ServiceContainer = styled.div`
         display: flex;
         flex-direction: column;
         justify-content : flex-start;
-        align-items: flex-start;
+        align-items: center;
         gap: 20px;
     }
     .analy-box{
@@ -130,7 +127,6 @@ const InputTitle = styled.textarea`
 
 const ApplicationPage = () => {
 
-    const [click, setClick] = useState('');
     const [appList, setAppList] = useState([]);
     const [appId, setAppId] = useState(0);
 
@@ -138,6 +134,7 @@ const ApplicationPage = () => {
     const [detail, setDetail] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [answer, setAnswer] = useState('');
 
     const navigator = useNavigate();
 
@@ -152,7 +149,7 @@ const ApplicationPage = () => {
             }
         }
         await getApplicationDetail(appId, config)
-            .then((res) => { console.log(res); setDetail(res.data.data); setTitle(res.data.data.title); setDescription(res.data.data.memo); })
+            .then((res) => { console.log(res); setDetail(res.data.data); setTitle(res.data.data.title); setDescription(res.data.data.memo);})
             .catch((err) => console.log(err));
     }
 
@@ -173,8 +170,6 @@ const ApplicationPage = () => {
     const onHandleForm = (x) => {
         setAppId(x);
     };
-
-    const [answer, setAnswer] = useState('');
 
     const onHandleAnswer = (x) => {
         setAnswer(x);
@@ -281,8 +276,7 @@ const ApplicationPage = () => {
 
                         <img src={exImg} alt="준비이미지" width="450px" />
                         <div className="pre-text">
-                            지원서 문항과 답변을 넣고 <br />
-                            예상 면접 질문을 생성해보세요!
+                            지원서에 예상 면접 질문을 추가해보세요!
                         </div>
                     </div>}
             </ServiceContainer>

@@ -71,7 +71,7 @@ const HeroSection = () => {
                     <div className="description">
                         프리큐는 지원서를 기반으로 한 예상 면접 질문, <br /> 면접 후기와 팁을 제공하여 지원자들이 충분히 면접에 <br />대비할 수 있도록 도움을 제공하는 서비스입니다.
                     </div>
-                    <button className="start-button" onClick={() => navigator('/service')}>프리큐 지금 체험해보기</button>
+                    <button className="start-button" onClick={() => navigator('/application/id')}>프리큐 지금 체험해보기</button>
                 </div>
                 <img src={mainImg} alt="사진을 불러올 수 없음" />
             </div>
