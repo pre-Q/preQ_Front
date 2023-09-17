@@ -36,7 +36,6 @@ const Chart = (props) => {
     const maxIndex = answerSkills?.findIndex((item) => item === maxValue);
     const maxSkillName = skills[maxIndex];
 
-
     return (
         <ChartBox>
             {props?.type === 'application' ?

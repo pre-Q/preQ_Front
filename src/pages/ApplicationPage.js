@@ -115,9 +115,9 @@ const InputTitle = styled.textarea`
     padding: 12px;
 
     font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 23px;
+    font-style: bold;
+    font-weight: 700;
+    font-size: 25px;
     line-height: 25px;
     color: #000000;
     white-space: nowrap;
@@ -149,7 +149,7 @@ const ApplicationPage = () => {
             }
         }
         await getApplicationDetail(appId, config)
-            .then((res) => { console.log(res); setDetail(res.data.data); setTitle(res.data.data.title); setDescription(res.data.data.memo);})
+            .then((res) => { console.log(res); setDetail(res.data.data); setTitle(res.data.data.title); setDescription(res.data.data.memo); })
             .catch((err) => console.log(err));
     }
 

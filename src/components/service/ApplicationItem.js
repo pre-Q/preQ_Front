@@ -17,13 +17,20 @@ const ItemBox = styled.div`
     font-size: 18px;
     line-height: 25px;
     color: #000000;
+    .title-text{
+        font-family: 'Poppins';
+        font-style: bold;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 25px;
+    }
 `
 const ApplicationItem = (props) => {
 
     const { id, title, content, width } = props;
     return (
         <ItemBox width={width} id={id}>
-            {title}
+            <span className="title-text">{title}</span>
             <br /><br />
             {content}
         </ItemBox>

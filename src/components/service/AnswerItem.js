@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import StyleButton from "../common/StyleButton";
 
 const ItemBox = styled.div`
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     width: 553px;
     // height: 133.1px;
@@ -19,12 +22,23 @@ const ItemBox = styled.div`
     font-size: 20px;
     line-height: 22px;
     color: #000000;
+    .button-wrapper{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
 `
 
 const AnswerItem = (props) => {
+
+    const { text, onClick, handleText } = props;
+
     return (
         <ItemBox>
-            {props.text}
+            {text}
+            <div className="button-wrapper">
+                <StyleButton width="140px" size="20px" onClick={() => { handleText(text); onClick(); }}>답변하기</StyleButton>
+            </div>
         </ItemBox>
     )
 }

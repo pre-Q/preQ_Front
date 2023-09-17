@@ -126,7 +126,7 @@ const ServicePage = () => {
                                         <Chart type='question' answer={answer?.softSkills} />
                                         <KeywordList answer={answer?.keywordTop5} />
                                     </div>
-                                    <AnswerList answer={answer?.preqList} />
+                                    <AnswerList answer={answer?.preqList} title={answer?.question} />
                                 </div>
                             }
                         </>
