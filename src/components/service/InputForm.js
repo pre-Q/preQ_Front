@@ -73,7 +73,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
         }
         await getPreQ(cid, config)
             .then((res) => {
-                console.log(res);
+                console.log('결과값', res);
                 console.log(res.data.data);
                 onHandleAnswer(res.data.data);
                 isClick(true);
