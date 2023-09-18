@@ -43,7 +43,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
     const [content, setContent] = useState('');
 
 
-    // 질문 저장
+    // 새로운 질문 저장
     const onSaveForm = async () => {
         let config = {
             headers: {
@@ -52,7 +52,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
             }
         }
 
-        await saveCoverLetter(id, title, content, config)
+        await saveCoverLetter(id, 0, title, content, config)
             .then((res) => {
                 console.log('결과값', res);
                 window.location.replace(`/application/${id}/child/${res.data.data}`);
@@ -143,8 +143,8 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
                 <br />
                 <div className="submit-button">
                     {/* {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>} */}
-                    {!click && cid === 'new' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
-                    {click || answer?.preqList || cid !== 'new' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : null}
+                    {cid === 'new' || content === '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
+                    {(answer?.preqList || cid !== 'new') && content !== '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : <></>}
                 </div>
             </InputWrapper>
         </>

@@ -69,6 +69,8 @@ const ApplicationList = ({ onHandleForm, onHandleAppList }) => {
         onHandleAppList(appList)
     }, [appList, onHandleAppList])
 
+    const [appHoverId, setAppHover] = useState('');
+
     return (
         <>
             <ListBox>
@@ -76,10 +78,13 @@ const ApplicationList = ({ onHandleForm, onHandleAppList }) => {
                     Application List
                 </div>
                 {appList?.map((item, index) => (
-                    <div onClick={() => { console.log(item.applicationId); onHandleForm(item?.applicationId); navigator(`/application/${item?.applicationId}`) }} key={item.applicationId}>
+                    <div onClick={() => { console.log(item.applicationId); onHandleForm(item?.applicationId); navigator(`/application/${item?.applicationId}`) }} key={item.applicationId} onMouseOver={() => setAppHover(item.applicationId)}>
                         <QuestionItem
                             key={item?.applicationId}
                             title={item?.title}
+                            appHoverId={appHoverId}
+                            appId={item.applicationId}
+                            type="app"
                         />
                     </div>
                 ))}

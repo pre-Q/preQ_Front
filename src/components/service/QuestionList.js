@@ -88,6 +88,8 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
     }, [formId])
 
 
+    const [childHoverId, setChildHover] = useState('');
+
     return (
         <>
             <ListBox>
@@ -95,10 +97,13 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
                     Question List
                 </div>
                 {qlist?.map((item, index) => (
-                    <div onClick={() => { console.log(item.id); console.log('new 데이터 삭제'); onHandleForm(item.id); setFormId(item.id); navigator(`/application/${id}/child/${item.id}`) }} key={item.id}>
+                    <div onClick={() => { console.log(item.id); onHandleForm(item.id); setFormId(item.id); navigator(`/application/${id}/child/${item.id}`) }} key={item.id} onMouseOver={() => { setChildHover(item.id); console.log('오버오버', item.id) }}>
                         <QuestionItem
                             key={item.id}
                             title={item.question}
+                            childId={item.id}
+                            childHoverId={childHoverId}
+                            type="child"
                         />
                     </div>
                 ))}

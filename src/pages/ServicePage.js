@@ -25,7 +25,7 @@ const ServiceContainer = styled.div`
     .pre-box{
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         width: 500px;
     }
@@ -43,7 +43,7 @@ const ServiceContainer = styled.div`
     .result-box{
         display: flex;
         flex-direction: column;
-        justify-content : flex-start;
+        justify-content : center;
         align-items: flex-start;
         gap: 20px;
     }

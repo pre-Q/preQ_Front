@@ -11,9 +11,9 @@ let config = {
 }
 
 // 질문 내용 저장
-export const saveCoverLetter = async (appId, question, answer, config) => {
+export const saveCoverLetter = async (appId, childId, question, answer, config) => {
     console.log({ appId, question, answer })
-    return await axios.post(`${PROXY}/api/v1/application/${appId}/child`, { question: question, answer: answer }, config);
+    return await axios.post(`${PROXY}/api/v1/application/${appId}/child`, { parentId: childId, question: question, answer: answer }, config);
 }
 
 // 질문 리스트 조회
@@ -55,5 +55,16 @@ export const patchMemo = async (appId, description, config) => {
 export const getApplicationDetail = async (appId, config) => {
     return await axios.get(`${PROXY}/api/v1/application/${appId}`, config);
 }
+
+// 지원서 삭제
+export const deleteApplication = async (appId, config) => {
+    return await axios.delete(`${PROXY}/api/v1/application/${appId}`, config);
+}
+
+// 지원서 질문 삭제
+export const deleteApplicationChild = async (appId, childId, config) => {
+    return await axios.delete(`${PROXY}/api/v1/application/${appId}/child/${childId}`, config);
+}
+
 
 

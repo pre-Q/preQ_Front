@@ -37,7 +37,7 @@ const AnswerItem = (props) => {
         <ItemBox>
             {text}
             <div className="button-wrapper">
-                <StyleButton width="140px" size="20px" onClick={() => { handleText(text); onClick(); }}>답변하기</StyleButton>
+                <StyleButton width="140px" size="20px" onClick={() => { handleText(text); onClick(text); }}>답변하기</StyleButton>
             </div>
         </ItemBox>
     )

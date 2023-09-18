@@ -4,6 +4,9 @@ import AnswerItem from "./AnswerItem";
 import TailModal from "../common/TailModal";
 import InputBox from "../common/InputBox";
 import StyleButton from "../common/StyleButton";
+import { saveCoverLetter } from "../../lib/api/service";
+import { useParams } from "react-router-dom";
+import { getCookie } from "../../lib/cookie";
 
 const ListBox = styled.div`
     display: flex;
@@ -43,6 +46,21 @@ const AnswerList = (props) => {
         setModalOpen(false);
     }
 
+    const { id, cid } = useParams();
+
+    const saveTailQuestion = async (tail) => {
+        let config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getCookie('is_login')}`,
+            }
+        }
+        await saveCoverLetter(id, Number(cid), tail, '', config)
+            .then((res) => {
+                console.log(res); console.log(tail); window.location.replace(`/application/${id}/child/${res.data.data}`);
+            })
+            .catch((err) => console.log(err));
+    }
     return (
         <>
             <ListBox>
@@ -52,7 +70,7 @@ const AnswerList = (props) => {
                 {props?.answer.map((item) =>
                     <>
                         {
-                            item.question ? <AnswerItem text={item.question} onClick={openModal} handleText={saveText} /> : <AnswerItem text={item} />
+                            item.question ? <AnswerItem text={item.question} onClick={saveTailQuestion} handleText={saveText} /> : <AnswerItem text={item} />
                         }
 
                     </>

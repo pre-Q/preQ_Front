@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import StyleButton from "../common/StyleButton";
+import { useParams, useSearchParams } from "react-router-dom";
+import { deleteApplication, deleteApplicationChild } from "../../lib/api/service";
+import { getCookie } from "../../lib/cookie";
 
 const ItemBox = styled.button`
     box-sizing: border-box;
@@ -27,13 +31,40 @@ const ItemBox = styled.button`
 
 const QuestionItem = (props) => {
 
-    const {title} = props;
+    const { key, type, title, childId, childHoverId, appId, appHoverId } = props;
 
+    const { id, cid } = useParams();
     // if (title !== null) {
     //     var titleStr = title ? title.substr(0, 13) + "..." : '제목 없음'
     // }
+
+    console.log(childHoverId, childId);
+
+    let config = {
+        headers: {
+            'Authorization': `Bearer ${getCookie('is_login')}`,
+            'withCredentials': true,
+        }
+    }
+
+    const handleDeleteApp = async () => {
+        await deleteApplication(appId, config)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+        window.location.replace(`/application/${id}`);
+    }
+
+    const handleDeleteChild = async () => {
+        await deleteApplicationChild(id, childId, config)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+        window.location.replace(`/application/${id}/child/${cid}`);
+    }
+
     return (
         <>
+            {type === 'app' ? (appHoverId === appId ? <button onClick={(e) => { e.stopPropagation(); handleDeleteApp(); }}>삭제</button> : null) :
+                (childHoverId === childId ? <button onClick={handleDeleteChild}>삭제</button> : null)}
             <ItemBox>
                 {title}
             </ItemBox>
