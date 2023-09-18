@@ -84,6 +84,7 @@ const NavBar = () => {
 
     const onLogout = () => {
         removeCookie('is_login');
+        removeCookie('tail');
         window.location.replace('/');
     }
 

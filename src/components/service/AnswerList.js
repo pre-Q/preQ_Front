@@ -6,7 +6,7 @@ import InputBox from "../common/InputBox";
 import StyleButton from "../common/StyleButton";
 import { saveCoverLetter } from "../../lib/api/service";
 import { useParams } from "react-router-dom";
-import { getCookie } from "../../lib/cookie";
+import { getCookie, setCookie } from "../../lib/cookie";
 
 const ListBox = styled.div`
     display: flex;
@@ -49,17 +49,19 @@ const AnswerList = (props) => {
     const { id, cid } = useParams();
 
     const saveTailQuestion = async (tail) => {
-        let config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getCookie('is_login')}`,
-            }
-        }
-        await saveCoverLetter(id, Number(cid), tail, '', config)
-            .then((res) => {
-                console.log(res); console.log(tail); window.location.replace(`/application/${id}/child/${res.data.data}`);
-            })
-            .catch((err) => console.log(err));
+        setCookie('tail', tail);
+        window.location.replace(`/application/${id}/child/new`);
+        // let config = {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${getCookie('is_login')}`,
+        //     }
+        // }
+        // await saveCoverLetter(id, Number(cid), tail, '', config)
+        //     .then((res) => {
+        //         console.log(res); console.log(tail); window.location.replace(`/application/${id}/child/${res.data.data}`);
+        //     })
+        //     .catch((err) => console.log(err));
     }
     return (
         <>

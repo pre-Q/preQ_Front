@@ -4,6 +4,8 @@ import StyleButton from "../common/StyleButton";
 import { useParams, useSearchParams } from "react-router-dom";
 import { deleteApplication, deleteApplicationChild } from "../../lib/api/service";
 import { getCookie } from "../../lib/cookie";
+import deleteImg from "../../asset/delete-btn.png";
+
 
 const ItemBox = styled.button`
     box-sizing: border-box;
@@ -63,8 +65,8 @@ const QuestionItem = (props) => {
 
     return (
         <>
-            {type === 'app' ? (appHoverId === appId ? <button onClick={(e) => { e.stopPropagation(); handleDeleteApp(); }}>삭제</button> : null) :
-                (childHoverId === childId ? <button onClick={handleDeleteChild}>삭제</button> : null)}
+            {type === 'app' ? (appHoverId === appId && appId !== 'new' ? <button onClick={(e) => { e.stopPropagation(); handleDeleteApp(); }} style={{ border: "none", backgroundColor: "transparent", width: "100%", textAlign: "right" }}><img src={deleteImg} alt="삭제아이콘" width="25px" /></button> : null) :
+                (childHoverId === childId && childId !== 'new' ? <button onClick={handleDeleteChild}>삭제</button> : null)}
             <ItemBox>
                 {title}
             </ItemBox>

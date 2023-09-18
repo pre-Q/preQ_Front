@@ -97,7 +97,7 @@ const QuestionList = ({ onHandleForm, onHandleQlist, onHandleAnswer }) => {
                     Question List
                 </div>
                 {qlist?.map((item, index) => (
-                    <div onClick={() => { console.log(item.id); onHandleForm(item.id); setFormId(item.id); navigator(`/application/${id}/child/${item.id}`) }} key={item.id} onMouseOver={() => { setChildHover(item.id); console.log('오버오버', item.id) }}>
+                    <div onClick={() => { removeCookie('tail'); console.log(item.id); onHandleForm(item.id); setFormId(item.id); navigator(`/application/${id}/child/${item.id}`) }} key={item.id} onMouseOver={() => { setChildHover(item.id); console.log('오버오버', item.id) }}>
                         <QuestionItem
                             key={item.id}
                             title={item.question}

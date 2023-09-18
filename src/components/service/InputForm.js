@@ -3,8 +3,7 @@ import styled from "styled-components";
 import InputBox from "../common/InputBox";
 import StyleButton from "../common/StyleButton";
 import { getPreQ, getPreQItem, saveCoverLetter } from "../../lib/api/service";
-import { getCookie, removeCookie, setCookie } from "../../lib/cookie";
-import { addPostItem } from "../../lib/api/community";
+import { getCookie } from "../../lib/cookie";
 import { useParams } from "react-router-dom";
 
 
@@ -45,6 +44,7 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
 
     // 새로운 질문 저장
     const onSaveForm = async () => {
+
         let config = {
             headers: {
                 'Authorization': `Bearer ${getCookie('is_login')}`,
@@ -52,14 +52,26 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
             }
         }
 
-        await saveCoverLetter(id, 0, title, content, config)
-            .then((res) => {
-                console.log('결과값', res);
-                window.location.replace(`/application/${id}/child/${res.data.data}`);
-            })
-            .catch((err) => {
-                console.log(err)
-            });
+        if (getCookie('tail')) {
+            await saveCoverLetter(id, 0, getCookie('tail'), content, config)
+                .then((res) => {
+                    console.log('결과값', res);
+                    window.location.replace(`/application/${id}/child/${res.data.data}`);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        }
+        else {
+            await saveCoverLetter(id, 0, title, content, config)
+                .then((res) => {
+                    console.log('결과값', res);
+                    window.location.replace(`/application/${id}/child/${res.data.data}`);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        }
     }
 
     // 질문 답변 조회 (핵심 역량, 키워드, 예상 면접 질문 리스트)
@@ -136,14 +148,14 @@ const InputForm = ({ isClick, formId, qlist, onHandleAnswer, onHandleLoading, an
         <>
             <InputWrapper>
                 <InputTitle>Enter Question</InputTitle>
-                <InputBox onChange={HandleTitleChange} width="600px" height='50px' value={title} />
+                <InputBox onChange={HandleTitleChange} width="600px" height='50px' value={getCookie('tail') ? getCookie('tail') : title} />
                 <br /><br />
                 <InputTitle>Enter Answer</InputTitle>
                 <InputBox onChange={HandleContentChange} width="600px" height="640px" value={content} />
                 <br />
                 <div className="submit-button">
                     {/* {click && title ? <StyleButton width="195px" height="53px" size="22px" onClick={onSaveForm}>Save</StyleButton> : <></>} */}
-                    {cid === 'new' || content === '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
+                    {cid === 'new' && content !== '' && (title || getCookie('tail')) ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onSaveForm(); setClick(true); }}>Save</StyleButton> : <></>}
                     {(answer?.preqList || cid !== 'new') && content !== '' ? <StyleButton width="195px" height="53px" size="22px" onClick={() => { onGeneratePreQ(); }}>Generate</StyleButton> : <></>}
                 </div>
             </InputWrapper>
