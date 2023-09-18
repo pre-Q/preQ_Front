@@ -66,7 +66,7 @@ const QuestionItem = (props) => {
     return (
         <>
             {type === 'app' ? (appHoverId === appId && appId !== 'new' ? <button onClick={(e) => { e.stopPropagation(); handleDeleteApp(); }} style={{ border: "none", backgroundColor: "transparent", width: "100%", textAlign: "right" }}><img src={deleteImg} alt="삭제아이콘" width="25px" /></button> : null) :
-                (childHoverId === childId && childId !== 'new' ? <button onClick={handleDeleteChild}>삭제</button> : null)}
+                (childHoverId === childId && childId !== 'new' ? <button onClick={handleDeleteChild} style={{ border: "none", backgroundColor: "transparent", width: "100%", textAlign: "right" }}><img src={deleteImg} alt="삭제아이콘" width="25px" /></button> : null)}
             <ItemBox>
                 {title}
             </ItemBox>
