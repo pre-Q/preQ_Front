@@ -31,13 +31,13 @@ const ItemBox = styled.div`
 
 const AnswerItem = (props) => {
 
-    const { text, saveTailQuestion, handleText } = props;
+    const { text, saveTailQuestion } = props;
 
     return (
         <ItemBox>
             {text}
             <div className="button-wrapper">
-                <StyleButton width="140px" size="20px" onClick={() => { handleText(text); saveTailQuestion(text); }}>답변하기</StyleButton>
+                <StyleButton width="140px" size="20px" onClick={() => saveTailQuestion(text)}>답변하기</StyleButton>
             </div>
         </ItemBox>
     )
