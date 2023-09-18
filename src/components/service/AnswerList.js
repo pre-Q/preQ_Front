@@ -72,7 +72,7 @@ const AnswerList = (props) => {
                 {props?.answer.map((item) =>
                     <>
                         {
-                            item.question ? <AnswerItem text={item.question} onClick={saveTailQuestion} handleText={saveText} /> : <AnswerItem text={item} />
+                            item.question ? <AnswerItem text={item.question} saveTailQuestion={saveTailQuestion} handleText={saveText} /> : <AnswerItem text={item} />
                         }
 
                     </>
