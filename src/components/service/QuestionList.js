@@ -6,6 +6,7 @@ import dummy from "../../db/data.json";
 import { getCoverLetter, getPreQItem } from "../../lib/api/service";
 import { getCookie, removeCookie, setCookie } from "../../lib/cookie";
 import { useNavigate, useParams } from "react-router-dom";
+import StyleButton from "../common/StyleButton";
 
 const ListBox = styled.div`
     display: flex;

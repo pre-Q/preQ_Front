@@ -11,14 +11,15 @@ import Chart from "../components/service/Chart";
 import { useState } from "react";
 import KeywordList from "../components/service/KeywordList";
 import Spinner from "../asset/spinner.gif";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import StyleButton from "../components/common/StyleButton";
 
 
 const ServiceContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: row;
-    margin-top: 50px;
+    margin-top: 40px;
     margin-right: auto;
     margin-left: auto;
     gap: 40px;
@@ -44,7 +45,7 @@ const ServiceContainer = styled.div`
         display: flex;
         flex-direction: column;
         justify-content : center;
-        align-items: center;
+        align-items: align-items;
         gap: 20px;
     }
     .analy-box{
@@ -56,6 +57,9 @@ const ServiceContainer = styled.div`
 `
 
 const ServicePage = () => {
+
+    const { id } = useParams();
+    const navigator = useNavigate();
 
     const [click, setClick] = useState(false);
 
@@ -108,7 +112,10 @@ const ServicePage = () => {
             <TopContainer color="blue" image="white">
                 <NavBar />
                 <ServiceContainer>
-                    <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
+                    <div className="left-wrapper">
+                        <StyleButton size="18px" width="160px" onClick={() => navigator(`/application/${id}`)}>지원서 목록으로</StyleButton>
+                        <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
+                    </div>
                     <InputForm isClick={isClick} formId={formId} answer={answer} qlist={qlist} onHandleAnswer={onHandleAnswer} onHandleLoading={onHandleLoading} />
                     {answer?.keywordTop5 ?
                         // 예상 질문 있을 때 => 반복 생성시 : 예상 질문 조회
