@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import StyleButton from "../common/StyleButton";
+import { setCookie } from "../../lib/cookie";
+import { useParams } from "react-router-dom";
 
 const ItemBox = styled.div`
     display: flex;
@@ -33,11 +35,18 @@ const AnswerItem = (props) => {
 
     const { text, saveTailQuestion } = props;
 
+    const { id } = useParams();
+
+    const handleQuestion = async (tail) => {
+        setCookie('tail', tail);
+        window.location.replace(`/application/${id}/child/new`);
+    }
+
     return (
         <ItemBox>
             {text}
             <div className="button-wrapper">
-                <StyleButton width="140px" size="20px" onClick={() => saveTailQuestion(text)}>답변하기</StyleButton>
+                <StyleButton width="140px" size="20px" onClick={() => handleQuestion(text)}>답변하기</StyleButton>
             </div>
         </ItemBox>
     )

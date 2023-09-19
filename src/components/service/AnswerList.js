@@ -48,21 +48,11 @@ const AnswerList = (props) => {
 
     const { id, cid } = useParams();
 
-    const saveTailQuestion = async (tail) => {
-        setCookie('tail', tail);
-        window.location.replace(`/application/${id}/child/new`);
-        // let config = {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${getCookie('is_login')}`,
-        //     }
-        // }
-        // await saveCoverLetter(id, Number(cid), tail, '', config)
-        //     .then((res) => {
-        //         console.log(res); console.log(tail); window.location.replace(`/application/${id}/child/${res.data.data}`);
-        //     })
-        //     .catch((err) => console.log(err));
-    }
+    // const saveTailQuestion = async (tail) => {
+    //     setCookie('tail', tail);
+    //     window.location.replace(`/application/${id}/child/new`);
+    // }
+
     return (
         <>
             <ListBox>
@@ -72,7 +62,7 @@ const AnswerList = (props) => {
                 {props?.answer.map((item) =>
                     <>
                         {
-                            item.question ? <AnswerItem text={item.question} saveTailQuestion={saveTailQuestion} /> : <AnswerItem text={item} />
+                            item.question ? <AnswerItem text={item.question} /> : <AnswerItem text={item} />
                         }
 
                     </>
