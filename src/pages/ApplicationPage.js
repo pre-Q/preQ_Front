@@ -7,7 +7,7 @@ import exImg from "../asset/example.png";
 import StyleButton from "../components/common/StyleButton";
 import Footer from "../components/common/Footer";
 import ApplicationItem from "../components/service/ApplicationItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Chart from "../components/service/Chart";
 import KeywordBox from "../components/service/KeywordBox";
 import ApplicationList from "../components/service/ApplicationList";
@@ -23,6 +23,13 @@ const ServiceContainer = styled.div`
     margin-left: auto;
     min-height: 1000px;
     gap: 40px;
+    .initial-box{
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 1100px;
+    }
     .pre-box{
         display: flex;
         flex-direction: column;
@@ -130,16 +137,16 @@ const ApplicationPage = () => {
     const [appList, setAppList] = useState([]);
     const [appId, setAppId] = useState(0);
 
-    const [loading, setLoading] = useState(false);
     const [detail, setDetail] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [answer, setAnswer] = useState('');
 
     const navigator = useNavigate();
 
     console.log('appList', appList);
     console.log('appId', appId);
+
+    const { id } = useParams();
 
     const getAppDetail = async () => {
         let config = {
@@ -148,19 +155,14 @@ const ApplicationPage = () => {
                 'withCredentials': true,
             }
         }
-        await getApplicationDetail(appId, config)
+        await getApplicationDetail(id, config)
             .then((res) => { console.log(res); setDetail(res.data.data); setTitle(res.data.data.title); setDescription(res.data.data.memo); })
             .catch((err) => console.log(err));
     }
 
     useEffect(() => {
         getAppDetail();
-    }, [appId]);
-
-    const onHandleLoading = (x) => {
-        setLoading(x);
-        console.log(loading);
-    };
+    }, [id]);
 
     const onHandleAppList = (x) => {
         setAppList(x)
@@ -171,16 +173,11 @@ const ApplicationPage = () => {
         setAppId(x);
     };
 
-    const onHandleAnswer = (x) => {
-        setAnswer(x);
-        console.log(answer);
-    }
-
 
 
     // 제목 수정
     const handleTitle = () => {
-        console.log('지원서 아이디', appId);
+        console.log('지원서 아이디', id);
         let config = {
             headers: {
                 'Authorization': `Bearer ${getCookie('is_login')}`,
@@ -189,7 +186,7 @@ const ApplicationPage = () => {
         }
         console.log('포커스 해제시');
         console.log(title);
-        patchTitle(appId, title, config)
+        patchTitle(id, title, config)
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
     }
@@ -204,14 +201,14 @@ const ApplicationPage = () => {
         }
         console.log('포커스 해제시');
         console.log(description);
-        patchMemo(appId, description, config)
+        patchMemo(id, description, config)
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
     }
 
     // 엔터키 누르면 제목 및 내용 수정
     const activeEnter = (e) => {
-        console.log('지원서 아이디', appId);
+        console.log('지원서 아이디', id);
         let config = {
             headers: {
                 'Authorization': `Bearer ${getCookie('is_login')}`,
@@ -221,13 +218,13 @@ const ApplicationPage = () => {
         if (e.key === "Enter") {
             console.log('엔터키 누름');
             if (e.target.id === 'title') {
-                patchTitle(appId, title, config)
+                patchTitle(id, title, config)
                     .then((res) => console.log(res))
                     .catch((err) => console.log(err));
                 document.getElementById("title").blur();
             }
             if (e.target.id === 'memo') {
-                patchMemo(appId, description, config)
+                patchMemo(id, description, config)
                     .then((res) => console.log(res))
                     .catch((err) => console.log(err));
                 document.getElementById("memo").blur();
@@ -236,8 +233,8 @@ const ApplicationPage = () => {
     }
 
     useEffect(() => {
-        setAppId(appId);
-    }, [appId, title, description, appList]);
+        setAppId(id);
+    }, [id, title, description, appList]);
 
 
     return (
@@ -245,7 +242,7 @@ const ApplicationPage = () => {
             <NavBar />
             <ServiceContainer>
                 <ApplicationList onHandleForm={onHandleForm} onHandleAppList={onHandleAppList} />
-                <InputWrapper>
+                {id === 'id' ? null : <InputWrapper>
                     <InputTitle id="title" width='600px' height='50px' placeholder="지원서 제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} onBlur={handleTitle} onKeyDown={(e) => activeEnter(e)} value={title}></InputTitle>
                     <br />
                     <InputTitle id="memo" width='600px' height='50px' placeholder="지원서 설명을 입력해주세요" onChange={(e) => setDescription(e.target.value)} onBlur={handleMemo} onKeyDown={(e) => activeEnter(e)} value={description}></InputTitle>
@@ -257,9 +254,10 @@ const ApplicationPage = () => {
                             )}
                         </div> : null}
                     <div className="submit-button">
-                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${appId}/child/new`) }}>문항 추가하기</StyleButton>
+                        <StyleButton width="195px" height="53px" size="22px" onClick={() => { navigator(`/application/${id}/child/new`) }}>문항 추가하기</StyleButton>
                     </div>
-                </InputWrapper>
+                </InputWrapper>}
+
                 {detail && detail?.applicationChild?.length !== 0 ?
                     <div className="result-box">
                         <Chart type='application' answer={detail?.softSkills} />
@@ -272,13 +270,20 @@ const ApplicationPage = () => {
                             )}
                         </div>
                     </div>
-                    : <div className="pre-box">
-
-                        <img src={exImg} alt="준비이미지" width="450px" />
-                        <div className="pre-text">
-                            지원서에 예상 면접 질문을 추가해보세요!
+                    :
+                    id === 'id' ?
+                        <div className="initial-box">
+                            <img src={exImg} alt="준비이미지" width="450px" />
+                            <div className="pre-text">
+                                왼쪽 + 버튼을 눌러 지원서를 생성하고<br />지원서 문항을 추가해보세요!
+                            </div>
                         </div>
-                    </div>}
+                        :
+                        <div className="pre-box">
+                            <img src={exImg} alt="준비이미지" width="450px" />
+                            <div className="pre-text">지원서 제목과 설명을 입력하고<br /> 지원서 문항을 추가해보세요! </div>
+                        </div>
+                }
             </ServiceContainer>
             <Footer />
         </TopContainer>

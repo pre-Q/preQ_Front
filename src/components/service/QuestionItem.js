@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import StyleButton from "../common/StyleButton";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { deleteApplication, deleteApplicationChild } from "../../lib/api/service";
 import { getCookie } from "../../lib/cookie";
 import deleteImg from "../../asset/delete-btn.png";
@@ -36,11 +35,6 @@ const QuestionItem = (props) => {
     const { key, type, title, childId, childHoverId, appId, appHoverId } = props;
 
     const { id, cid } = useParams();
-    // if (title !== null) {
-    //     var titleStr = title ? title.substr(0, 13) + "..." : '제목 없음'
-    // }
-
-    console.log(childHoverId, childId);
 
     let config = {
         headers: {
