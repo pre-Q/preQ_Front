@@ -13,6 +13,7 @@ import KeywordList from "../components/service/KeywordList";
 import Spinner from "../asset/spinner.gif";
 import { useNavigate, useParams } from "react-router-dom";
 import StyleButton from "../components/common/StyleButton";
+import { removeCookie } from "../lib/cookie";
 
 
 const ServiceContainer = styled.div`
@@ -113,7 +114,7 @@ const ServicePage = () => {
                 <NavBar />
                 <ServiceContainer>
                     <div className="left-wrapper">
-                        <StyleButton size="18px" width="160px" onClick={() => navigator(`/application/${id}`)}>지원서 목록으로</StyleButton>
+                        <StyleButton size="18px" width="160px" onClick={() => {removeCookie('tail'); navigator(`/application/${id}}`)}}>지원서 목록으로</StyleButton>
                         <QuestionList onHandleForm={onHandleForm} onHandleQlist={onHandleQlist} onHandleAnswer={onHandleAnswer} />
                     </div>
                     <InputForm isClick={isClick} formId={formId} answer={answer} qlist={qlist} onHandleAnswer={onHandleAnswer} onHandleLoading={onHandleLoading} />

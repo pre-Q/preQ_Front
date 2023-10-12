@@ -83,8 +83,8 @@ const LinkTo = styled(Link)`
 const NavBar = () => {
 
     const onLogout = () => {
-        removeCookie('is_login');
         removeCookie('tail');
+        removeCookie('is_login');
         window.location.replace('/');
     }
 
@@ -104,8 +104,8 @@ const NavBar = () => {
                         <LinkTo to='/community'>커뮤니티</LinkTo>
                         <LinkTo to='/mypage'>마이페이지</LinkTo>
                         {isLogin() ? <button className='logout-button' onClick={onLogout}>로그아웃</button> : <LinkTo to='/login'>로그인</LinkTo>}
-                        <Link to='/application/id'>
-                            <button className='service-button'>질문예측서비스</button></Link>
+                        <Link to='/application/id' >
+                            <button className='service-button' onClick={() => removeCookie('tail')}>질문예측서비스</button></Link>
                     </Menu >
                 </NavBlock>
             </NavContainer>
